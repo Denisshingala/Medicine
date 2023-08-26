@@ -8,13 +8,19 @@ if (isset($_SESSION['admin_email'])) {
 
 require_once("./config/connection.php");
 
+
+$sql = "SELECT * FROM `company`";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch();
+
 ?>
 <!-- Navbar Start -->
 <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
         <div class="col-lg-6 px-5 text-start">
-            <small><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</small>
-            <small class="ms-4"><i class="fa fa-envelope me-2"></i>info@example.com</small>
+            <small><i class="fa fa-map-marker-alt me-2"></i><?php echo $data['address'] ?></small>
+            <small class="ms-4"><i class="fa fa-envelope me-2"></i><?php echo $data['company_email'] ?></small>
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small>Follow us:</small>
@@ -28,12 +34,6 @@ require_once("./config/connection.php");
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
             <div class="logo_section">
-                <?php
-                $sql = "SELECT * FROM `company`";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $data = $stmt->fetch();
-                ?>
                 <a href="index.php"><img class="img-fluid" src="<?php echo ($domain_name . ($data['company_logo'] ?? "/default_logo.png")) ?>" width="100" alt="site_logo" /></a>
             </div>
         </a>
@@ -89,9 +89,9 @@ require_once("./config/connection.php");
             </ul>
             <div class="d-none d-lg-flex ms-2">
 
-                <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
+                <button class="btn-sm-square bg-white rounded-circle ms-3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <small class="fa fa-search text-body"></small>
-                </a>
+                </button>
                 <?php if ($loggedin) { ?>
                     <a class="btn-sm-square bg-white rounded-circle ms-3" href="/medicine/admin">
                         <small class="fa fa-user text-body"></small>
@@ -104,5 +104,23 @@ require_once("./config/connection.php");
             </div>
         </div>
     </nav>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Search product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="search" name="search" id="search_medicine" class="form-control" placeholder="Search item name here">
+                <hr>
+                <ul id="search_output" class="list-group">
+
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Navbar End -->
