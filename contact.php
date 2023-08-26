@@ -1,3 +1,15 @@
+<?php
+require_once("./config/connection.php");
+
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,60 +51,36 @@
     <!-- Spinner End -->
 
 
-    <!-- Navbar Start -->
-    <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
-            <div class="col-lg-6 px-5 text-start">
-                <small><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</small>
-                <small class="ms-4"><i class="fa fa-envelope me-2"></i>info@example.com</small>
-            </div>
-            <div class="col-lg-6 px-5 text-end">
-                <small>Follow us:</small>
-                <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
+    <?php
+    include_once("./component/navbar.php");
 
-        <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-            <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-                <h1 class="fw-bold text-primary m-0">F<span class="text-secondary">oo</span>dy</h1>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About Us</a>
-                    <a href="product.html" class="nav-item nav-link">Products</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="blog.html" class="dropdown-item">Blog Grid</a>
-                            <a href="feature.html" class="dropdown-item">Our Features</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link active">Contact Us</a>
-                </div>
-                <div class="d-none d-lg-flex ms-2">
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-search text-body"></small>
-                    </a>
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-shopping-bag text-body"></small>
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <!-- Navbar End -->
+    try {
+        if (isset($_POST['send_mail'])) {
+            $phpmailer = new PHPMailer();
+            $phpmailer->isSMTP();
+            $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->Port = 2525;
+            $phpmailer->Username = '183e176e6accdd';
+            $phpmailer->Password = 'd24acf4ce6d602';
+
+            //Recipients
+            $phpmailer->setFrom('no-replay@rm.com', 'Mailer');
+            $phpmailer->addAddress($data['company_email'], 'Joe User');     //Add a recipient
+
+            //Content
+            $phpmailer->isHTML(true);                                  // Set email format to HTML
+            $phpmailer->Subject = $_POST['subject'];
+            $phpmailer->Body    = $_POST['message'];
+
+            $phpmailer->send();
+            $success = "Thanks for contact us!";
+        }
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+
+    ?>
 
 
     <!-- Page Header Start -->
@@ -101,14 +89,35 @@
             <h1 class="display-3 mb-3 animated slideInDown">Contact Us</h1>
             <nav aria-label="breadcrumb animated slideInDown">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="text-body" href="#">Pages</a></li>
+                    <li class="breadcrumb-item"><a class="text-body" href="<?php echo $domain_name; ?>">Home</a></li>
                     <li class="breadcrumb-item text-dark active" aria-current="page">Contact Us</li>
                 </ol>
             </nav>
         </div>
     </div>
     <!-- Page Header End -->
+
+    <?php
+    if ($error) {
+        echo "
+            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <strong>Error!</strong> $error
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>
+        ";
+        $error = "";
+    }
+
+    if ($success) {
+        echo "
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Success!</strong> $success
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>
+        ";
+        $success = "";
+    }
+    ?>
 
     <!-- Contact Start -->
     <div class="container-xxl py-6">
@@ -121,50 +130,49 @@
                 <div class="col-lg-5 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="bg-primary text-white d-flex flex-column justify-content-center h-100 p-5">
                         <h5 class="text-white">Call Us</h5>
-                        <p class="mb-5"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                        <p class="mb-5"><i class="fa fa-phone-alt me-3"></i><?php echo $data['mobile_number'] ?></p>
                         <h5 class="text-white">Email Us</h5>
-                        <p class="mb-5"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                        <p class="mb-5"><i class="fa fa-envelope me-3"></i><?php echo $data['company_email'] ?></p>
                         <h5 class="text-white">Office Address</h5>
-                        <p class="mb-5"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                        <p class="mb-5"><i class="fa fa-map-marker-alt me-3"></i><?php echo $data['address'] ?></p>
                         <h5 class="text-white">Follow Us</h5>
                         <div class="d-flex pt-2">
-                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href="#"><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                    <form>
+                    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" id="contact_us_form">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                    <input type="text" class="form-control" id="name" name="name" required placeholder="Your Name">
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Your Email">
                                     <label for="email">Your Email</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                    <input type="text" class="form-control" id="subject" name="subject" required placeholder="Subject">
                                     <label for="subject">Subject</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 200px"></textarea>
+                                    <textarea class="form-control" required placeholder="Leave a message here" id="message" name="message" style="height: 200px"></textarea>
                                     <label for="message">Message</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Send Message</button>
+                                <input class="btn btn-primary rounded-pill py-3 px-5" name="send_mail" type="submit" value="Send Message">
                             </div>
                         </div>
                     </form>
@@ -177,66 +185,13 @@
 
     <!-- Google Map Start -->
     <div class="container-xxl px-0 wow fadeIn" data-wow-delay="0.1s" style="margin-bottom: -6px;">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.784570626395!2d72.60190877116383!3d22.994948071396944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85c2ffffffff%3A0x46237fe856be5618!2sRushi%20Marketing!5e0!3m2!1sen!2sin!4v1693044497194!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.784570626395!2d72.60190877116383!3d22.994948071396944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85c2ffffffff%3A0x46237fe856be5618!2sRushi%20Marketing!5e0!3m2!1sen!2sin!4v1693044497194!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>%
     </div>
     <!-- Google Map End -->
 
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark footer pt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h1 class="fw-bold text-primary mb-4">F<span class="text-secondary">oo</span>dy</h1>
-                    <p>Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Address</h4>
-                    <p><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
+    <?php
+    include_once("./component/footer.php");
+    ?>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>

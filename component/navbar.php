@@ -29,7 +29,7 @@ require_once("./config/connection.php");
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
             <div class="logo_section">
                 <?php
-                $sql = "SELECT company_logo, owner_photo FROM `company`";
+                $sql = "SELECT * FROM `company`";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $data = $stmt->fetch();
