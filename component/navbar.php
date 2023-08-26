@@ -27,7 +27,15 @@ require_once("./config/connection.php");
 
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="fw-bold text-primary m-0">Ru<span class="text-secondary">shi Mar</span>eting</h1>
+            <div class="logo_section">
+                <?php
+                $sql = "SELECT company_logo, owner_photo FROM `company`";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $data = $stmt->fetch();
+                ?>
+                <a href="index.html"><img class="img-fluid" src="<?php echo ($domain_name . ($data['company_logo'] ?? "/default_logo.png")) ?>" width="100" alt="site_logo" /></a>
+            </div>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>

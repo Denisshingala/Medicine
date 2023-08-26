@@ -88,10 +88,10 @@ if (isset($_POST['login_submit'])) {
                            <label class="label_field">Password</label>
                            <input type="password" name="password" placeholder="Password" />
                         </div>
-                        <div class="field">
+                        <!-- <div class="field">
                            <label class="label_field hidden">hidden label</label>
                            <a class="forgot" href="">Forgotten Password?</a>
-                        </div>
+                        </div> -->
                         <div class="field margin_0">
                            <input type="submit" name="login_submit" class="main_bt w-100" value="Sing In">
                         </div>

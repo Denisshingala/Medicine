@@ -85,9 +85,9 @@ require_once('../config/connection.php');
                                        </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-between border px-1">
-                                       <button type="button" class="btn btn-danger text-white mx-1 w-100" data-toggle="modal" data-target="#modal' . $row["id"] . '">
+                                       <a href="' . $domain_name . '/about.php?m_id=' . $row['id'] . '" class="btn btn-danger text-white mx-1 w-100">
                                           <i class="fa fa-eye mr-1"></i>View Details
-                                       </button>
+                                       </a>
                                     </div>
                                  </div>
                               </div>';

@@ -216,7 +216,7 @@ if (isset($_POST['update_medicine'])) {
                                                         <div class='col'>
                                                             <div class='input-group mb-3'>
                                                                 <span class='input-group-text'>Description</span>
-                                                                <textarea class='form-control' name='description' id='description' placeholder='Medicine description'>'" . $row['description'] . "'</textarea>
+                                                                <textarea class='form-control' name='description' id='description' placeholder='Medicine description'>" . $row['description'] . "</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
