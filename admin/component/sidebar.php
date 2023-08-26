@@ -32,10 +32,16 @@ $data = $stmt->fetch();
         <ul class="list-unstyled components">
             <?php $page = basename($_SERVER['PHP_SELF'], ".php"); ?>
             <li class="<?php echo ($page == "" || $page = "index" ? "active" : ""); ?>">
-                <a href="/medicine/admin/"><i class="fa fa-eye yellow_color"></i> <span>View Product</span></a>
+                <a href="/medicine/admin/"><i class="fa fa-eye yellow_color"></i> <span>View medicine</span></a>
             </li>
-            <li class="<?php echo ($page = "add_product" ? "active" : ""); ?>">
-                <a href="add_medicine.php"><i class="fa fa-plus-circle purple_color"></i> <span>Add Product</span></a>
+            <li class="<?php echo ($page = "add_medicine" ? "active" : ""); ?>">
+                <a href="add_medicine.php"><i class="fa fa-plus-circle purple_color"></i> <span>Add medicine</span></a>
+            </li>
+            <li class="<?php echo ($page = "medicine" ? "active" : ""); ?>">
+                <a href="update_medicine.php"><i class="fa fa-edit purple_color"></i> <span>Update medicine</span></a>
+            </li>
+            <li class="<?php echo ($page = "medicine" ? "active" : ""); ?>">
+                <a href="remove_medicine.php"><i class="fa fa-remove purple_color"></i> <span>Delete medicine</span></a>
             </li>
             <li class="<?php echo ($page = "category" ? "active" : ""); ?>">
                 <a href="add_category.php"><i class="fa fa-tasks purple_color2"></i> <span>Category</span></a>

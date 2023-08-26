@@ -3625,3 +3625,7 @@ table.projects tr td:first-child {
 .accordion>.card>.card-header {
     margin-bottom: -1px;
 }
+
+.form-modal{
+    max-width: 700px !important;
+}
