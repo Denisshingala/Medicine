@@ -26,7 +26,7 @@ require_once("./config/connection.php");
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
+        <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
             <div class="logo_section">
                 <?php
                 $sql = "SELECT * FROM `company`";
@@ -34,7 +34,7 @@ require_once("./config/connection.php");
                 $stmt->execute();
                 $data = $stmt->fetch();
                 ?>
-                <a href="index.html"><img class="img-fluid" src="<?php echo ($domain_name . ($data['company_logo'] ?? "/default_logo.png")) ?>" width="100" alt="site_logo" /></a>
+                <a href="index.php"><img class="img-fluid" src="<?php echo ($domain_name . ($data['company_logo'] ?? "/default_logo.png")) ?>" width="100" alt="site_logo" /></a>
             </div>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -42,7 +42,7 @@ require_once("./config/connection.php");
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
+                <a href="index.php" class="nav-item nav-link active">Home</a>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle dropdown-toggle-split" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
                     <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
@@ -62,14 +62,14 @@ require_once("./config/connection.php");
                                 $sub_stmt->execute();
                                 $count = $sub_stmt->rowCount();
                                 echo "<li>
-                                    <a href='#' class='dropdown-item'>" . $row['name'] . ($count ? " &raquo;" : "") . "</a>";
+                                    <a href='" . ($count ?  "#" : "category.php?c_id=" . $row['id']) . "' class='dropdown-item'>" . $row['name'] . ($count ? " &raquo;" : "") . "</a>";
 
                                 if ($count) {
                                     echo "<ul class='dropdown-submenu'>";
                                     while ($row = $sub_stmt->fetch()) {
                                         echo "
                                             <li>
-                                                <a href='#' class='dropdown-item'>" . $row['name'] . "</a>
+                                                <a href='category.php?c_id=" . $row['id'] . "' class='dropdown-item'>" . $row['name'] . "</a>
                                             </li>";
                                     }
                                     echo "</ul>";
@@ -85,7 +85,7 @@ require_once("./config/connection.php");
                         ?>
                     </ul>
                 </li>
-                <a href=" contact.html" class="nav-item nav-link">Contact Us</a>
+                <a href=" contact.php" class="nav-item nav-link">Contact Us</a>
             </ul>
             <div class="d-none d-lg-flex ms-2">
 
