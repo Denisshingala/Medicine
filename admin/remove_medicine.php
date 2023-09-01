@@ -79,13 +79,14 @@ if (isset($_POST['delete_medicine'])) {
                         <div class="row column_title">
                             <div class="col-md-12">
                                 <div class="page_title">
-                                    <h2>Dashboard</h2>
+                                    <h2>Delete medicine</h2>
                                 </div>
                             </div>
                         </div>
-                        <div class="row column1">
+                        <input type="search" name="search-medicine" id="search-delete-medicine" class="form-control my-2 w-50 mx-auto" placeholder="Search here">
+                        <div class="row column1" id="target-delete-div">
                             <?php
-                            $sql = "SELECT * FROM `medicine`";
+                            $sql = "SELECT m.id as id, m.name as medicine_name, m.mrp as mrp, m.photo as photo, m.category_id as medicine_category_id, m.packing_date as packing_date, m.expiry_date as expiry_date, m.description as description, m.mrp as mrp, c.name as category_name FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
 
@@ -96,11 +97,13 @@ if (isset($_POST['delete_medicine'])) {
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:200px;">
                                         <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:200px;" src="' . $domain_name . $row['photo'] . '" alt="medicine photo">
                                         </div>
-                                        <div class="card-body border-left border-right text-center p-2">
-                                        <h6 class="text-truncate">' . $row['name'] . '</h6>
-                                        <div class="d-flex justify-content-center">
-                                            <h6>₹ ' . ($row['mrp']) . '</h6>
-                                        </div>
+                                        <div class="card-body border-left border-righ p-2">
+                                            <h4 class="text-truncate">' . $row['medicine_name'] . '</h4>
+                                            <p style="font-size: 13px; color: black">Category name: ' . ($row['category_name']) . '</p>
+                                            <p class="text-truncate">' . $row['description'] . '</p>
+                                            <h6>MRP: ₹' . $row['mrp'] . '</h6>
+                                            <p style="font-size: 10px" class="m-0 p-0">Created At: ' . date('Y/m/d', strtotime($row['packing_date'])) . '</p>
+                                            <p style="font-size: 10px" class="m-0 p-0"> ' . ($row['expiry_date'] ? "Expired At: " . date('Y/m/d', strtotime($row['expiry_date'])) : "") . '</p>
                                         </div>
                                         <div class="card-footer d-flex justify-content-between border px-1">
                                             <button type="button" class="btn btn-danger text-white mx-1 w-100" data-toggle="modal" data-target="#modal' . $row["id"] . '">
@@ -154,18 +157,13 @@ if (isset($_POST['delete_medicine'])) {
     <script src="js/animate.js"></script>
     <!-- select country -->
     <script src="js/bootstrap-select.js"></script>
-    <!-- owl carousel -->
-    <script src="js/owl.carousel.js"></script>
-    <!-- chart js -->
-    <script src="js/Chart.min.js"></script>
-    <script src="js/Chart.bundle.min.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/analyser.js"></script>
     <!-- nice scrollbar -->
     <script src="js/perfect-scrollbar.min.js"></script>
     <script>
         var ps = new PerfectScrollbar('#sidebar');
     </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <!-- custom js -->
     <script src="js/custom.js"></script>
     <script src="js/chart_custom_style1.js"></script>

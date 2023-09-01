@@ -21,7 +21,7 @@ if (isset($_POST['login_submit'])) {
          $_SESSION['admin_email'] = $email;
          $_SESSION['admin_id'] = $row['id'];
          $_SESSION['is_loggedin'] = true;
-         header("location: $domain_name");
+         header("location: $domain_name/admin");
       } else {
          $error = "Email or password is invalid!";
       }

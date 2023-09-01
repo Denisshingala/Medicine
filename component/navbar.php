@@ -92,15 +92,6 @@ $data = $stmt->fetch();
                 <button class="btn-sm-square bg-white rounded-circle ms-3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <small class="fa fa-search text-body"></small>
                 </button>
-                <?php if ($loggedin) { ?>
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="/medicine/admin">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
-                <?php } else { ?>
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="/medicine/admin/login.php">
-                        <small class="fa fa-sign-in-alt text-body"></small>
-                    </a>
-                <?php } ?>
             </div>
         </div>
     </nav>

@@ -9,7 +9,7 @@ if (isset($_POST['add_medicine'])) {
     $name = $_POST['name'];
     $mrp = $_POST['medicine_mrp'];
     $category = $_POST['category'];
-    $expiry_date = $_POST['expiry_date'];
+    $expiry_date = ($_POST['expiry_date'] && date('Y/m/d', strtotime($_POST['expiry_date'])) !== "00/00/00"  ? $_POST['expiry_date'] : NULL);
     $description = $_POST['description'];
 
     $photo_new_path = "/img/medicine/" . time() . "." . explode("/", mime_content_type($photo))[1];

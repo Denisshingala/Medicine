@@ -85,7 +85,7 @@
                     let content = "";
                     if (data.length) {
                         for (let medicine of data) {
-                            content += `<a href='${"/medicine/about.php?m_id=" + medicine.id}'><li class='list-group-item'><img src='/medicine${medicine.photo}' alt='medicine image' width="30" class='me-4' />${medicine.name}</li></a>`;
+                            content += `<a href='${"/medicine/about.php?m_id=" + medicine.id}'><li class='list-group-item'><img src='/medicine${medicine.photo}' alt='medicine image' width="30" class='me-4' />${medicine.medicine_name}</li></a>`;
                         }
                     } else {
                         content = "<li class='list-group-item text-center text-primary'>No data found!</li>";

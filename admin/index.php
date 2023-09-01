@@ -66,9 +66,10 @@ require_once('../config/connection.php');
                         </div>
                      </div>
                   </div>
-                  <div class="row column1">
+                  <input type="search" name="search-medicine" id="search-view-medicine" class="form-control my-2 w-50 mx-auto" placeholder="Search here">
+                  <div class="row column1" id="target-view-div">
                      <?php
-                     $sql = "SELECT * FROM `medicine`";
+                     $sql = "SELECT m.id as id, m.name as medicine_name, m.mrp as mrp, m.category_id as medicine_category_id, m.photo as photo, m.packing_date as packing_date, m.expiry_date as expiry_date, m.description as description, m.mrp as mrp, c.name as category_name FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id LIMIT 8";
                      $stmt = $conn->prepare($sql);
                      $stmt->execute();
 
@@ -76,18 +77,15 @@ require_once('../config/connection.php');
                         echo '<div class="col-lg-3 col-md-6 col-sm-12 pb-4">
                                  <div class="card product-item border-0 mb-4">
                                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:200px;">
-                                       <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:200px;" src="' . $domain_name . $row['photo'] . '" alt="medicine photo">
+                                       <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); overflow: hidden; height:200px;" src="' . $domain_name . $row['photo'] . '" alt="medicine photo">
                                     </div>
-                                    <div class="card-body border-left border-right text-center p-2">
-                                       <h6 class="text-truncate">' . $row['name'] . '</h6>
-                                       <div class="d-flex justify-content-center">
-                                          <h6>₹ ' . ($row['mrp']) . '</h6>
-                                       </div>
-                                    </div>
-                                    <div class="card-footer d-flex justify-content-between border px-1">
-                                       <a href="' . $domain_name . '/about.php?m_id=' . $row['id'] . '" class="btn btn-danger text-white mx-1 w-100">
-                                          <i class="fa fa-eye mr-1"></i>View Details
-                                       </a>
+                                    <div class="card-body border-left border-right p-2">
+                                       <h4 class="text-truncate">' . $row['medicine_name'] . '</h4>
+                                       <p style="font-size: 13px; color: black">Category name: ' . ($row['category_name']) . '</p>
+                                       <p class="text-truncate">' . $row['description'] . '</p>
+                                       <h6>MRP: ₹' . $row['mrp'] . '</h6>
+                                       <p style="font-size: 10px" class="m-0 p-0">Created At: ' . date('Y/m/d', strtotime($row['packing_date'])) . '</p>
+                                       <p style="font-size: 10px" class="m-0 p-0"> ' . ($row['expiry_date'] ? "Expired At: " . date('Y/m/d', strtotime($row['expiry_date'])) : "") . '</p>
                                     </div>
                                  </div>
                               </div>';
@@ -112,21 +110,14 @@ require_once('../config/connection.php');
    <script src="js/animate.js"></script>
    <!-- select country -->
    <script src="js/bootstrap-select.js"></script>
-   <!-- owl carousel -->
-   <script src="js/owl.carousel.js"></script>
-   <!-- chart js -->
-   <script src="js/Chart.min.js"></script>
-   <script src="js/Chart.bundle.min.js"></script>
-   <script src="js/utils.js"></script>
-   <script src="js/analyser.js"></script>
    <!-- nice scrollbar -->
    <script src="js/perfect-scrollbar.min.js"></script>
    <script>
       var ps = new PerfectScrollbar('#sidebar');
    </script>
    <!-- custom js -->
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    <script src="js/custom.js"></script>
-   <script src="js/chart_custom_style1.js"></script>
 </body>
 
 </html>

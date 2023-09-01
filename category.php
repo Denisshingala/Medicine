@@ -3,7 +3,7 @@ require_once("./config/connection.php");
 
 if (isset($_GET['c_id'])) {
     $id = $_GET['c_id'];
-    $sql = "SELECT m.name as medicine_name, m.photo as photo, m.id as m_id, c.name as category_name, m.mrp as mrp FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id WHERE c.id=:id";
+    $sql = "SELECT m.name as medicine_name, m.mrp as mrp, m.photo as photo, m.packing_date as packing_date, m.expiry_date as expiry_date, m.description as description, m.mrp as mrp, c.name as category_name FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id WHERE c.id=:id";
     $stmt = $conn->prepare($sql);
     $stmt->bindValue("id", $id);
 
@@ -11,7 +11,6 @@ if (isset($_GET['c_id'])) {
 
     if ($stmt->rowCount()) {
         $medicines = $stmt->fetchAll();
-        $category = $medicines[0]['category_name'];
     } else {
         header("location: $domain_name");
     }
@@ -99,28 +98,24 @@ if (isset($_GET['c_id'])) {
                             <div id="tab-1" class="tab-pane fade show p-4 active">
                                 <div class="row g-4">
                                     <?php
-
-                                    foreach ($medicines as $row) {
-                                        echo '
-                                            <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                                <div class="product-item">
-                                                    <div class="position-relative bg-light overflow-hidden">
-                                                        <img class="img-fluid w-100" src="' . $domain_name . $row['photo'] . '" alt="">
-                                                    </div>
-                                                    <div class="text-center p-4">
-                                                        <a class="d-block h5 mb-2" href="">' . $row['medicine_name'] . '</a>
-                                                        <span class="text-primary me-1">₹' . $row['mrp'] . '</span>
-                                                    </div>
-                                                    <div class="d-flex border-top">
-                                                        <small class="w-100 text-center border-end py-2">
-                                                            <a href="' . $domain_name . '/about.php?m_id=' . $row['m_id'] . '" class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>View detail</a>
-                                                        </small>
-                                                    </div>
+                                    foreach ($medicines as $row) { ?>
+                                        <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                            <div class="product-item">
+                                                <div class="position-relative bg-light overflow-hidden">
+                                                    <img class="img-fluid w-100" src="<?php echo $domain_name . $row['photo'] ?>" alt="">
+                                                    <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
                                                 </div>
-                                            </div>';
-                                    }
-
-                                    ?>
+                                                <div class="p-4">
+                                                    <a class="d-block h5 mb-2" href="#"><?php echo $row['medicine_name'] ?></a>
+                                                    <p style="font-size: 15px; color: black">Category name: <?php echo ($row['category_name']) ?></p>
+                                                    <p style="font-size: 13px" class="m-0 p-0"><?php echo $row['description'] ?></p>
+                                                    <p class="text-primary me-1 h-6">MRP: ₹<?php echo $row['mrp'] ?></p>
+                                                    <p style="font-size: 10px" class="m-0 p-0">Created At: <?php echo date('Y/m/d', strtotime($row['packing_date'])) ?></p>
+                                                    <p style="font-size: 10px" class="m-0 p-0"> <?php echo ($row['expiry_date'] ? "Expired At: " . date('Y/m/d', strtotime($row['expiry_date'])) : "") ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
