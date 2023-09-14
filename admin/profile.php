@@ -128,12 +128,12 @@ if (isset($_POST['update_profile'])) {
                                  <div class="row w-100">
                                     <div class="col">
                                        <div class="d-flex justify-content-center">
-                                          <img src="<?php echo ($data['owner_photo'] ? $domain_name . $data['owner_photo'] : '')  ?>" class="pb-4" width="200" id="profile_preview" />
+                                          <img src="<?php echo (isset($data['owner_photo']) && $data['owner_photo'] && $data['owner_photo'] !== "" ? $domain_name . $data['owner_photo'] : '')  ?>" class="pb-4" width="200" id="profile_preview" />
                                        </div>
                                     </div>
                                     <div class="col">
                                        <div class=" d-flex justify-content-center">
-                                          <img src="<?php echo ($data['company_logo'] ? $domain_name . $data['company_logo'] : '') ?>" class="pb-4" width="200" id="company_logo_preview" />
+                                          <img src="<?php echo (isset($data['company_logo']) && $data['company_logo'] && $data['company_logo'] !== "" ? $domain_name . $data['company_logo'] : '') ?>" class="pb-4" width="200" id="company_logo_preview" />
                                        </div>
                                     </div>
                                  </div>

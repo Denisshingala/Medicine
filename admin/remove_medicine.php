@@ -71,11 +71,6 @@ if (isset($_POST['delete_medicine'])) {
                 <!-- dashboard inner -->
                 <div class="midde_cont">
                     <div class="container-fluid">
-
-                        <?php
-                        include_once("../component/error-success.php");
-                        ?>
-
                         <div class="row column_title">
                             <div class="col-md-12">
                                 <div class="page_title">
@@ -83,6 +78,10 @@ if (isset($_POST['delete_medicine'])) {
                                 </div>
                             </div>
                         </div>
+
+                        <?php
+                        include_once("../component/error-success.php");
+                        ?>
                         <input type="search" name="search-medicine" id="search-delete-medicine" class="form-control my-2 w-50 mx-auto" placeholder="Search here">
                         <div class="row column1" id="target-delete-div">
                             <?php
@@ -90,12 +89,15 @@ if (isset($_POST['delete_medicine'])) {
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
 
-                            while ($row = $stmt->fetch()) {
-                                echo '
+                            if ($stmt->rowCount()) {
+
+
+                                while ($row = $stmt->fetch()) {
+                                    echo '
                                 <div class="col-lg-3 col-md-6 col-sm-12 pb-4">
                                     <div class="card product-item border-0 mb-4">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:200px;">
-                                        <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:200px;" src="' . $domain_name . $row['photo'] . '" alt="medicine photo">
+                                        <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); height:200px;" src="' . (isset($row['photo']) && $row['photo'] &&  $row['photo'] !== "" ? $domain_name . $row['photo'] : $domain_name . "/img/default_medicine_img.png") . '" alt="medicine photo">
                                         </div>
                                         <div class="card-body border-left border-righ p-2">
                                             <h4 class="text-truncate">' . $row['medicine_name'] . '</h4>
@@ -112,7 +114,7 @@ if (isset($_POST['delete_medicine'])) {
                                         </div>
                                     </div>
                                 </div>';
-                                echo "
+                                    echo "
                                 <!-- Modal -->
                                 <div class='modal fade' id='modal" . $row['id'] . "' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
                                     <div class='modal-dialog modal-dialog-centered' role='document'>
@@ -136,6 +138,9 @@ if (isset($_POST['delete_medicine'])) {
                                         </div>
                                     </div>
                                 </div>";
+                                }
+                            } else {
+                                echo "<div class='container py-5 text-center text-secondary'>No data found!</div>";
                             }
                             ?>
                         </div>

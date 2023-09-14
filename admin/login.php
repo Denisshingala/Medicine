@@ -70,7 +70,7 @@ if (isset($_POST['login_submit'])) {
             <div class="login_section">
                <div class="logo_login">
                   <div class="center">
-                     <img width="210" src="images/logo/logo.png" alt="#" />
+                     <h1 class="text-white">Admin login</h1>
                   </div>
                </div>
                <div class="login_form">

@@ -130,11 +130,11 @@ require 'vendor/autoload.php';
                 <div class="col-lg-5 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="bg-primary text-white d-flex flex-column justify-content-center h-100 p-5">
                         <h5 class="text-white">Call Us</h5>
-                        <p class="mb-5"><i class="fa fa-phone-alt me-3"></i><?php echo $data['mobile_number'] ?></p>
+                        <p class="mb-5"><i class="fa fa-phone-alt me-3"></i><?php echo $data['mobile_number'] ?? "Mobile number" ?></p>
                         <h5 class="text-white">Email Us</h5>
-                        <p class="mb-5"><i class="fa fa-envelope me-3"></i><?php echo $data['company_email'] ?></p>
+                        <p class="mb-5"><i class="fa fa-envelope me-3"></i><?php echo $data['company_email'] ?? "Company email" ?></p>
                         <h5 class="text-white">Office Address</h5>
-                        <p class="mb-5"><i class="fa fa-map-marker-alt me-3"></i><?php echo $data['address'] ?></p>
+                        <p class="mb-5"><i class="fa fa-map-marker-alt me-3"></i><?php echo $data['address'] ?? "Address" ?></p>
                         <h5 class="text-white">Follow Us</h5>
                         <div class="d-flex pt-2">
                             <a class="btn btn-square btn-outline-light rounded-circle me-1" href="#"><i class="fab fa-twitter"></i></a>

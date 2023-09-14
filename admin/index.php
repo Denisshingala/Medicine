@@ -72,12 +72,12 @@ require_once('../config/connection.php');
                      $sql = "SELECT m.id as id, m.name as medicine_name, m.mrp as mrp, m.category_id as medicine_category_id, m.photo as photo, m.packing_date as packing_date, m.expiry_date as expiry_date, m.description as description, m.mrp as mrp, c.name as category_name FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id LIMIT 8";
                      $stmt = $conn->prepare($sql);
                      $stmt->execute();
-
-                     while ($row = $stmt->fetch()) {
-                        echo '<div class="col-lg-3 col-md-6 col-sm-12 pb-4">
+                     if ($stmt->rowCount()) {
+                        while ($row = $stmt->fetch()) {
+                           echo '<div class="col-lg-3 col-md-6 col-sm-12 pb-4">
                                  <div class="card product-item border-0 mb-4">
                                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0 d-flex align-items-center" style="height:200px;">
-                                       <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); overflow: hidden; height:200px;" src="' . $domain_name . $row['photo'] . '" alt="medicine photo">
+                                       <img class="img-fluid w-100" style="object-fit: contain; background: rgba(245, 245, 245, 0.5); overflow: hidden; height:200px;" src="' . (isset($row['photo']) && $row['photo'] &&  $row['photo'] !== "" ? $domain_name . $row['photo'] : $domain_name . "/img/default_medicine_img.png") . '" alt="medicine photo">
                                     </div>
                                     <div class="card-body border-left border-right p-2">
                                        <h4 class="text-truncate">' . $row['medicine_name'] . '</h4>
@@ -89,6 +89,9 @@ require_once('../config/connection.php');
                                     </div>
                                  </div>
                               </div>';
+                        }
+                     } else {
+                        echo "<div class='container py-5 text-center text-secondary'>No data found!</div>";
                      }
                      ?>
                   </div>

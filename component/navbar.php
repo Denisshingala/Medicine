@@ -19,8 +19,8 @@ $data = $stmt->fetch();
 <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
         <div class="col-lg-6 px-5 text-start">
-            <small><i class="fa fa-map-marker-alt me-2"></i><?php echo $data['address'] ?></small>
-            <small class="ms-4"><i class="fa fa-envelope me-2"></i><?php echo $data['company_email'] ?></small>
+            <?php echo isset($data['address']) ? '<small><i class="fa fa-map-marker-alt me-2"></i>' . $data['address'] . '</small>' : '' ?>
+            <?php echo isset($data['company_email']) ? '<small class="ms-4"><i class="fa fa-envelope me-2"></i>' . $data['company_email'] . '</small>' : '' ?>
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small>Follow us:</small>
@@ -34,7 +34,7 @@ $data = $stmt->fetch();
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
             <div class="logo_section">
-                <a href="index.php"><img class="img-fluid" src="<?php echo ($domain_name . ($data['company_logo'] ?? "/default_logo.png")) ?>" width="100" alt="site_logo" /></a>
+                <a href="index.php"><img class="img-fluid" src="<?php echo (isset($data['company_logo']) && $data['company_logo'] && $data['company_logo'] !== "" ? $domain_name . $data['company_logo'] : $domain_name . "/img/default_logo.png") ?>" width="100" alt="site_logo" /></a>
             </div>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">

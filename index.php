@@ -59,7 +59,7 @@ require_once("./config/connection.php");
                         <div class="container">
                             <div class="row justify-content-start">
                                 <div class="col-lg-7">
-                                    <h1 class="display-2 mb-5 animated slideInDown text-white">Organic Food Is Good For Health</h1>
+                                    <h1 class="display-2 mb-5 animated slideInDown text-white">The greatest wealth is health</h1>
                                     <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
                                     <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
                                 </div>
@@ -101,7 +101,7 @@ require_once("./config/connection.php");
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <div class="about-img position-relative overflow-hidden p-5 pe-0">
-                        <img class="img-fluid w-100" src="<?php echo $domain_name . $data['owner_photo'] ?>">
+                        <img class="img-fluid w-100" src="<?php echo (isset($data['owner_photo']) && $data['owner_photo'] && $data['owner_photo '] !== "" ? $domain_name . $data['owner_photo'] : $domain_name . "/img/default_profile.png") ?>">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
@@ -171,23 +171,30 @@ require_once("./config/connection.php");
                         $sql = "SELECT m.name as medicine_name, m.mrp as mrp, m.photo as photo, m.packing_date as packing_date, m.expiry_date as expiry_date, m.description as description, m.mrp as mrp, c.name as category_name FROM `medicine` as m INNER JOIN `category` as c ON m.category_id = c.id LIMIT 8";
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
-
-                        while ($row = $stmt->fetch()) { ?>
-                            <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="product-item">
-                                    <div class="position-relative bg-light overflow-hidden">
-                                        <img class="img-fluid w-100" src="<?php echo $domain_name . $row['photo'] ?>" alt="">
-                                        <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
-                                    </div>
-                                    <div class="p-4">
-                                        <a class="d-block h5 mb-2" href="#"><?php echo $row['medicine_name'] ?></a>
-                                        <p style="font-size: 15px; color: black">Category name: <?php echo ($row['category_name']) ?></p>
-                                        <p style="font-size: 13px" class="m-0 p-0"><?php echo $row['description'] ?></p>
-                                        <p class="text-primary me-1 h-6">MRP: ₹<?php echo $row['mrp'] ?></p>
-                                        <p style="font-size: 10px" class="m-0 p-0">Created At: <?php echo date('Y/m/d', strtotime($row['packing_date'])) ?></p>
-                                        <p style="font-size: 10px" class="m-0 p-0"> <?php echo ($row['expiry_date'] ? "Expired At: " . date('Y/m/d', strtotime($row['expiry_date'])) : "") ?></p>
+                        // /img/company/1693061940.png
+                        if ($stmt->rowCount()) {
+                            while ($row = $stmt->fetch()) { ?>
+                                <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                    <div class="product-item">
+                                        <div class="position-relative bg-light overflow-hidden">
+                                            <img class="img-fluid w-100" src="<?php echo (isset($row['photo']) && $row['photo'] &&  $row['photo'] !== "" ? $domain_name . $row['photo'] : $domain_name . "/img/default_medicine_img.png") ?>" alt="">
+                                            <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
+                                        </div>
+                                        <div class="p-4">
+                                            <a class="d-block h5 mb-2" href="#"><?php echo $row['medicine_name'] ?></a>
+                                            <p style="font-size: 15px; color: black">Category name: <?php echo ($row['category_name']) ?></p>
+                                            <p style="font-size: 13px" class="m-0 p-0"><?php echo $row['description'] ?></p>
+                                            <p class="text-primary me-1 h-6">MRP: ₹<?php echo $row['mrp'] ?></p>
+                                            <p style="font-size: 10px" class="m-0 p-0">Created At: <?php echo date('Y/m/d', strtotime($row['packing_date'])) ?></p>
+                                            <p style="font-size: 10px" class="m-0 p-0"> <?php echo ($row['expiry_date'] ? "Expired At: " . date('Y/m/d', strtotime($row['expiry_date'])) : "") ?></p>
+                                        </div>
                                     </div>
                                 </div>
+                            <?php
+                            }
+                        } else { ?>
+                            <div class="wow fadeInUp text-center border border-1 p-5 text-primary" data-wow-delay="0.1s">
+                                No medicines available
                             </div>
                         <?php } ?>
                     </div>

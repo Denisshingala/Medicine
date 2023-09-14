@@ -13,15 +13,15 @@ $data = $stmt->fetch();
     <div class="sidebar_blog_1">
         <div class="sidebar-header">
             <div class="logo_section">
-                <a href="index.html"><img class="logo_icon img-responsive" src="<?php echo $domain_name . $data['owner_photo'] ?>" alt="#" /></a>
+                <a href="index.html"><img class="logo_icon img-responsive" src="<?php echo (isset($data['owner_photo']) && $data['owner_photo'] && $data['owner_photo'] !== "" ? $domain_name . $data['owner_photo'] : $domain_name . "/img/default_profile.png") ?>" alt="#" /></a>
             </div>
         </div>
         <div class="sidebar_user_info">
             <div class="icon_setting"></div>
             <div class="user_profle_side">
-                <div class="user_img"><img class="img-responsive" src="<?php echo $domain_name . $data['owner_photo'] ?>" alt="#" /></div>
+                <div class="user_img"><img class="text-black img-responsive" src="<?php echo (isset($data['owner_photo']) && $data['owner_photo'] && $data['owner_photo'] !== "" ? $domain_name . $data['owner_photo'] : $domain_name . "/img/default_profile.png") ?>" alt="#" /></div>
                 <div class="user_info">
-                    <h6><?php echo $data['owner_name'] ?></h6>
+                    <h6><?php echo (isset($data['owner_name']) && $data['owner_name'] && $data['owner_name '] !== "" ? $domain_name . $data['owner_name'] : "Admin name") ?></h6>
                     <p><span class="online_animation"></span> Online</p>
                 </div>
             </div>
